@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Track FIR</title>
+  <link rel="stylesheet" href="trackFIR.css" />
+</head>
+<body>
+  <div style="position: absolute; top: 20px; right: 20px;">
+    <a href="index.html" style="
+      background-color: #007bff;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      font-family: sans-serif;
+      transition: background-color 0.3s ease;
+    " onmouseover="this.style.backgroundColor='#0056b3'"
+       onmouseout="this.style.backgroundColor='#007bff'">
+      🏠 Home
+    </a>
+  </div>
+  
+  <div class="track-container">
+    <h2>Track FIR Status</h2>
+    <form onsubmit="trackFIR(event)">
+      <label for="reference">Enter FIR Reference ID</label>
+      <input type="text" id="reference" placeholder="e.g., FIR123456" required />
+      <button type="submit">Track FIR</button>
+    </form>
+  </div>
+
+  <script>
+    const backendURL = "http://localhost:5000/api";
+
+    function trackFIR(event) {
+      event.preventDefault();
+      const ref = document.getElementById("reference").value.trim();
+
+      fetch(`${backendURL}/fir/track/${ref}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.message === "FIR not found") {
+            alert("No FIR found with this reference.");
+          } else {
+            const { aadhaar, details, evidenceURL, submittedAt } = data;
+            alert(
+              `FIR Details:\n\nAadhaar: ${aadhaar}\nDetails: ${details}\nEvidence: ${evidenceURL || "None"}\nSubmitted: ${new Date(submittedAt).toLocaleString()}`
+            );
+          }
+        })
+        .catch(() => alert("Error connecting to server."));
+    }
+  </script>
+</body>
+</html>

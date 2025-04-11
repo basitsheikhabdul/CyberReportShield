@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submit FIR</title>
+  <link rel="stylesheet" href="submitFIR.css" />
+</head>
+<body>
+    <div style="position: absolute; top: 20px; right: 20px;">
+        <a href="index.html" style="
+          background-color: #007bff;
+          color: white;
+          padding: 10px 16px;
+          border-radius: 6px;
+          text-decoration: none;
+          font-weight: bold;
+          font-size: 14px;
+          font-family: sans-serif;
+          transition: background-color 0.3s ease;
+        " onmouseover="this.style.backgroundColor='#0056b3'"
+           onmouseout="this.style.backgroundColor='#007bff'">
+          🏠 Home
+        </a>
+      </div>
+      
+  <div class="container">
+    <h2>Submit a New FIR</h2>
+    <form id="firForm">
+      <label for="details">FIR Details:</label>
+      <textarea id="details" rows="5" required></textarea>
+
+      <label for="evidence">Evidence URL (optional):</label>
+      <input type="text" id="evidence" />
+
+      <button type="submit">Submit FIR</button>
+    </form>
+  </div>
+
+  <script>
+    const backendURL = "http://localhost:5000/api";
+
+    document.getElementById("firForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const aadhaar = localStorage.getItem("aadhaar");
+      const details = document.getElementById("details").value;
+      const evidenceURL = document.getElementById("evidence").value;
+
+      if (!aadhaar) {
+        alert("You must log in first.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      fetch(`${backendURL}/fir/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aadhaar, details, evidenceURL })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.reference) {
+          alert("FIR Submitted Successfully!\nReference: " + data.reference);
+          document.getElementById("firForm").reset();
+        } else {
+          alert("Error submitting FIR.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

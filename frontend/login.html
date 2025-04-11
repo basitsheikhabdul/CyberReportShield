@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login with OTP</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .home-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .home-button a {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .home-button a:hover {
+      background-color: #0056b3;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 0.5rem 0 0.2rem;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    .otp-section {
+      display: none;
+      margin-top: 1rem;
+    }
+
+    .show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Home Button -->
+  <div class="home-button">
+    <a href="index.html">🏠 Home</a>
+  </div>
+
+  <div class="login-container">
+    <h2>Login with OTP</h2>
+    <form id="loginForm" onsubmit="return false;">
+      <label for="phone">Aadhaar Number</label>
+      <input type="text" id="phone" placeholder="Enter your Aadhaar Number" required />
+
+      <button class="btn" onclick="generateOTP()">Generate OTP</button>
+
+      <div class="otp-section" id="otpSection">
+        <label for="otp">Enter OTP</label>
+        <input type="number" id="otp" placeholder="Enter OTP" required />
+        <button class="btn" onclick="verifyOTP()">Verify OTP</button>
+        <button class="btn btn-secondary" onclick="reenterAadhaar()">Re-enter Aadhaar</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const backendURL = "http://localhost:5000/api";
+
+    function generateOTP() {
+      const aadhaar = document.getElementById("phone").value;
+
+      fetch(`${backendURL}/auth/generate-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aadhaar })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert("OTP sent (demo): " + data.otp);
+        document.getElementById("otpSection").classList.add("show");
+      });
+    }
+
+    function verifyOTP() {
+      const aadhaar = document.getElementById("phone").value;
+      const otp = document.getElementById("otp").value;
+
+      fetch(`${backendURL}/auth/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aadhaar, otp })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message === "OTP verified") {
+          alert("Login successful!");
+          localStorage.setItem("aadhaar", aadhaar);
+          window.location.href = "submitFIR.html";
+        } else {
+          alert("Invalid OTP");
+        }
+      });
+    }
+
+    function reenterAadhaar() {
+      document.getElementById("phone").value = "";
+      document.getElementById("otp").value = "";
+      document.getElementById("otpSection").classList.remove("show");
+    }
+  </script>
+
+</body>
+</html>

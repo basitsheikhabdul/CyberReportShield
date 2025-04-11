@@ -1,0 +1,131 @@
+
+*{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+body{
+    margin: 0;
+}
+
+header{
+    background-color: rgb(0, 51, 102); 
+    display: flex; 
+    justify-content: space-between;
+}
+header img{
+    height: 80px;
+    width: 80px;
+}
+
+header a{
+    display: inline;
+    text-decoration: none;
+    position: absolute;
+    color: aliceblue;
+    margin-top: 15px;
+    font-size: 30px;
+    font-weight: bold;
+}
+.navbar button{
+    margin: 2px;
+    margin-right: 10px;
+}
+
+.box1 img{
+    width: 100%;
+    opacity: 50%;
+}
+.box1 span{
+    background-color: rgb(173, 173, 173);
+    position: absolute;
+    top: 200px;
+    left: 16px;
+    border-radius: 20px;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.box1 .heading1{
+    top: 280px;
+    position: absolute;
+    color: white;
+    left: 16px;  
+}
+.box1 .heading2{
+    top: 320px;
+    position: absolute;
+    left: 16px;
+    color: yellow;
+}
+.box1 p{
+    top: 380px;
+    position: absolute;
+    left: 16px;
+    color: white;
+}
+.box1 .bt1{
+    top: 470px;
+    position: absolute;
+    left: 16px;
+}
+.box1 .bt2{
+    top: 470px;
+    position: absolute;
+    left: 170px;
+}
+.box2 .card{
+    height: 500px;
+    width: 350px;
+    position: absolute;
+    top: 150px;
+    margin-left: 1000px;
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+.box2 .card2{
+    height: 100px;
+    width: 300px;
+    margin: 25px;
+    background-color: rgb(0, 51, 102);
+    border-radius: 20px; 
+}
+.heading3{
+    font-size: 25px;
+    color: white;
+    font-weight: bolder;
+    margin-left: 20px;
+    margin-top: 10px;
+
+}
+.heading4{
+    font-size: 20px;
+    color: white;
+    margin-left: 20px;
+}
+.box2 ol{
+    margin-left: 20px;
+}
+.box2 ol li{
+    padding: 20px;
+    font-size: larger;
+}
+.part2{
+    text-align: center;
+    background-color: rgb(249, 239, 226);
+    height: 1000px;
+}
+.part2 h1{
+    color: rgb(0, 51, 102);
+}
+
+.cards i{
+    font-size: 50px;
+}
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+footer{
+    margin-top: 60px;
+}
