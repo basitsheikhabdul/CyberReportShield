@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Filed FIRs</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px 40px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #003366;
+    }
+
+    .fir-item {
+      background: #f9f9f9;
+      border-left: 4px solid #003366;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .home-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .home-button a {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .home-button a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="home-button">
+    <a href="index.html">🏠 Home</a>
+  </div>
+
+  <div class="container">
+    <h2>All Filed FIRs</h2>
+    <div id="firList"></div>
+  </div>
+
+  <script>
+    const backendURL = "http://localhost:5000/api/fir/all";
+
+    fetch(backendURL)
+      .then(res => res.json())
+      .then(data => {
+        const firList = document.getElementById("firList");
+        if (!data.length) {
+          firList.innerHTML = "<p>No FIRs filed yet.</p>";
+          return;
+        }
+        firList.innerHTML = data.map(fir => `
+          <div class="fir-item">
+            <strong>Reference:</strong> ${fir.reference}<br>
+            <strong>Aadhaar:</strong> ${fir.aadhaar}<br>
+            <strong>Details:</strong> ${fir.details}<br>
+            <strong>Evidence:</strong> ${fir.evidenceURL || "None"}<br>
+            <strong>Date:</strong> ${new Date(fir.submittedAt).toLocaleString()}
+          </div>
+        `).join('');
+      })
+      .catch(() => {
+        document.getElementById("firList").innerHTML = "<p>Error fetching FIRs.</p>";
+      });
+  </script>
+</body>
+</html>

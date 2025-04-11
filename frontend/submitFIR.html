@@ -7,31 +7,21 @@
   <link rel="stylesheet" href="submitFIR.css" />
 </head>
 <body>
-    <div style="position: absolute; top: 20px; right: 20px;">
-        <a href="index.html" style="
-          background-color: #007bff;
-          color: white;
-          padding: 10px 16px;
-          border-radius: 6px;
-          text-decoration: none;
-          font-weight: bold;
-          font-size: 14px;
-          font-family: sans-serif;
-          transition: background-color 0.3s ease;
-        " onmouseover="this.style.backgroundColor='#0056b3'"
-           onmouseout="this.style.backgroundColor='#007bff'">
-          🏠 Home
-        </a>
-      </div>
-      
   <div class="container">
+    <div style="position: absolute; top: 20px; right: 20px;">
+      <a href="index.html" style="background-color: #007bff; color: white; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 14px; font-family: sans-serif; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#0056b3'" onmouseout="this.style.backgroundColor='#007bff'">🏠 Home</a>
+    </div>
+
     <h2>Submit a New FIR</h2>
     <form id="firForm">
       <label for="details">FIR Details:</label>
       <textarea id="details" rows="5" required></textarea>
 
       <label for="evidence">Evidence URL (optional):</label>
-      <input type="text" id="evidence" />
+      <input type="text" id="evidence" placeholder="Paste image or video link">
+
+      <label for="fileUpload">Upload Photo/Video (optional):</label>
+      <input type="file" id="fileUpload" accept="image/*,video/*">
 
       <button type="submit">Submit FIR</button>
     </form>

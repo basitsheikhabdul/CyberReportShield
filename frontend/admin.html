@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Cyber Report Shield</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px 40px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #003366;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #003366;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .results {
+      display: none;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .result-item {
+      margin-bottom: 15px;
+      padding: 10px;
+      background: white;
+      border-radius: 6px;
+      border-left: 4px solid #003366;
+    }
+
+    .home-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .home-button a {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .home-button a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="home-button">
+    <a href="index.html">🏠 Home</a>
+  </div>
+
+  <div class="container">
+    <h2>Admin Login</h2>
+    <form onsubmit="adminLogin(event)">
+      <label for="userid">Admin User ID</label>
+      <input type="text" id="userid" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="results" id="firResults"></div>
+  </div>
+
+  <script>
+    const ADMIN_ID = "admin123";
+    const ADMIN_PASS = "admin@123";
+    const backendURL = "http://localhost:5000/api/fir/all";
+
+    function adminLogin(e) {
+      e.preventDefault();
+      const id = document.getElementById("userid").value;
+      const pass = document.getElementById("password").value;
+
+      if (id === ADMIN_ID && pass === ADMIN_PASS) {
+        fetch(backendURL)
+          .then(res => res.json())
+          .then(data => {
+            const resultBox = document.getElementById("firResults");
+            resultBox.style.display = "block";
+            resultBox.innerHTML = "<h3>Filed FIRs:</h3>" +
+              data.map(fir => `
+                <div class="result-item">
+                  <strong>Reference:</strong> ${fir.reference}<br>
+                  <strong>Aadhaar:</strong> ${fir.aadhaar}<br>
+                  <strong>Details:</strong> ${fir.details}<br>
+                  <strong>Evidence:</strong> ${fir.evidenceURL || "None"}<br>
+                  <strong>Date:</strong> ${new Date(fir.submittedAt).toLocaleString()}
+                </div>
+              `).join('');
+          });
+      } else {
+        alert("Invalid credentials");
+      }
+    }
+  </script>
+</body>
+</html>
