@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="trackFIR.css" />
 </head>
 <body>
+
+  <!-- Home Button -->
   <div style="position: absolute; top: 20px; right: 20px;">
     <a href="index.html" style="
       background-color: #007bff;
@@ -23,7 +25,7 @@
       🏠 Home
     </a>
   </div>
-  
+
   <div class="track-container">
     <h2>Track FIR Status</h2>
     <form onsubmit="trackFIR(event)">
@@ -31,6 +33,18 @@
       <input type="text" id="reference" placeholder="e.g., FIR123456" required />
       <button type="submit">Track FIR</button>
     </form>
+
+    <!-- FIR Details Display Section -->
+    <div id="firResult" style="display: none; margin-top: 30px; padding: 20px; background: #f4faff; border-left: 6px solid #007bff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <h3 style="color: #003366;">FIR Details</h3>
+      <p><strong>Reference ID:</strong> <span id="refResult"></span></p>
+      <p><strong>Aadhaar:</strong> <span id="aadhaarResult"></span></p>
+      <p><strong>Details:</strong> <span id="detailsResult"></span></p>
+      <p><strong>Evidence:</strong> <a href="#" target="_blank" id="evidenceResult">View</a></p>
+      <p><strong>Submitted At:</strong> <span id="dateResult"></span></p>
+      <p><strong>Status:</strong> Under Review</p>
+      <p><strong>Expected Resolution Time:</strong> Within 7 business days</p>
+    </div>
   </div>
 
   <script>
@@ -46,13 +60,16 @@
           if (data.message === "FIR not found") {
             alert("No FIR found with this reference.");
           } else {
-            const { aadhaar, details, evidenceURL, submittedAt } = data;
-            alert(
-              `FIR Details:\n\nAadhaar: ${aadhaar}\nDetails: ${details}\nEvidence: ${evidenceURL || "None"}\nSubmitted: ${new Date(submittedAt).toLocaleString()}`
-            );
+            document.getElementById("firResult").style.display = "block";
+            document.getElementById("refResult").textContent = data.reference;
+            document.getElementById("aadhaarResult").textContent = data.aadhaar;
+            document.getElementById("detailsResult").textContent = data.details;
+            document.getElementById("evidenceResult").href = data.evidenceURL || "#";
+            document.getElementById("evidenceResult").textContent = data.evidenceURL ? "View Evidence" : "No Evidence";
+            document.getElementById("dateResult").textContent = new Date(data.submittedAt).toLocaleString();
           }
         })
-        .catch(() => alert("Error connecting to server."));
+        .catch(() => alert("Error connecting to the server."));
     }
   </script>
 </body>

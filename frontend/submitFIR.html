@@ -25,6 +25,12 @@
 
       <button type="submit">Submit FIR</button>
     </form>
+    <div id="referenceSection" style="display: none; margin-top: 20px; padding: 20px; border-radius: 8px; background-color: #e8f4fc; border: 1px solid #b3d7f5; color: #003366;">
+      <h3>FIR Submitted Successfully ✅</h3>
+      <p>Your Reference ID is: <strong id="referenceID"></strong></p>
+      <p>Please save this reference ID to track your FIR status later.</p>
+    </div>
+    
   </div>
 
   <script>
@@ -51,7 +57,8 @@
       .then(res => res.json())
       .then(data => {
         if (data.reference) {
-          alert("FIR Submitted Successfully!\nReference: " + data.reference);
+          document.getElementById("referenceID").textContent = data.reference;
+          document.getElementById("referenceSection").style.display = "block";
           document.getElementById("firForm").reset();
         } else {
           alert("Error submitting FIR.");
