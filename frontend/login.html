@@ -103,6 +103,13 @@
     .show {
       display: block;
     }
+
+    .otp-display {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #28a745;
+    }
   </style>
 </head>
 <body>
@@ -126,6 +133,9 @@
         <button class="btn" onclick="verifyOTP()">Verify OTP</button>
         <button class="btn btn-secondary" onclick="reenterAadhaar()">Re-enter Aadhaar</button>
       </div>
+
+      <!-- OTP Display Section -->
+      <div id="otpDisplay" class="otp-display"></div>
     </form>
   </div>
 
@@ -142,7 +152,11 @@
       })
       .then(res => res.json())
       .then(data => {
-        alert("OTP sent (demo): " + data.otp);
+        // Display the OTP on the page
+        const otpDisplay = document.getElementById("otpDisplay");
+        otpDisplay.innerHTML = `OTP sent: ${data.otp}`;
+
+        // Show the OTP input section
         document.getElementById("otpSection").classList.add("show");
       });
     }
@@ -172,6 +186,9 @@
       document.getElementById("phone").value = "";
       document.getElementById("otp").value = "";
       document.getElementById("otpSection").classList.remove("show");
+
+      // Clear OTP display
+      document.getElementById("otpDisplay").innerHTML = "";
     }
   </script>
 
